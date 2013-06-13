@@ -1,0 +1,4 @@
+C:\Users\Andrew Choate\Documents\Visual Studio 2010\Projects\Sanctum\Sanctum.Database\bin\Release\Sanctum.Database.dll
+C:\Users\Andrew Choate\Documents\Visual Studio 2010\Projects\Sanctum\Sanctum.Database\bin\Release\Sanctum.Database.pdb
+C:\Users\Andrew Choate\Documents\Visual Studio 2010\Projects\Sanctum\Sanctum.Database\obj\Release\Sanctum.Database.dll
+C:\Users\Andrew Choate\Documents\Visual Studio 2010\Projects\Sanctum\Sanctum.Database\obj\Release\Sanctum.Database.pdb
