@@ -1,1 +1,2 @@
-These project files may be distributed and changed but all licenses and copyrights must remain as they are, as well as all source file headers. 
+These project files may be distributed and changed but all licenses and copyrights must remain 
+as they are, as well as all source file headers. 
