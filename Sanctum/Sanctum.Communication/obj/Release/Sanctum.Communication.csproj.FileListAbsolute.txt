@@ -1,0 +1,4 @@
+C:\Users\Andrew Choate\Documents\Visual Studio 2010\Projects\Sanctum\Sanctum.Communication\bin\Release\Sanctum.Communication.dll
+C:\Users\Andrew Choate\Documents\Visual Studio 2010\Projects\Sanctum\Sanctum.Communication\bin\Release\Sanctum.Communication.pdb
+C:\Users\Andrew Choate\Documents\Visual Studio 2010\Projects\Sanctum\Sanctum.Communication\obj\Release\Sanctum.Communication.dll
+C:\Users\Andrew Choate\Documents\Visual Studio 2010\Projects\Sanctum\Sanctum.Communication\obj\Release\Sanctum.Communication.pdb

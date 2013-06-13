@@ -1,0 +1,7 @@
+C:\Users\Andrew Choate\documents\visual studio 2010\Projects\Sanctum\Sanctum\bin\Release\Sanctum.dll
+C:\Users\Andrew Choate\documents\visual studio 2010\Projects\Sanctum\Sanctum\bin\Release\Sanctum.pdb
+C:\Users\Andrew Choate\documents\visual studio 2010\Projects\Sanctum\Sanctum\obj\Release\Sanctum.dll
+C:\Users\Andrew Choate\documents\visual studio 2010\Projects\Sanctum\Sanctum\obj\Release\Sanctum.pdb
+C:\Users\Andrew Choate\Documents\Visual Studio 2010\Projects\Sanctum\Sanctum\obj\Release\Sanctum.csprojResolveAssemblyReference.cache
+C:\Users\Andrew Choate\Documents\Visual Studio 2010\Projects\Sanctum\Sanctum\bin\Release\Sanctum.Data.dll
+C:\Users\Andrew Choate\Documents\Visual Studio 2010\Projects\Sanctum\Sanctum\bin\Release\Sanctum.Data.pdb
