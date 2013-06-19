@@ -22,8 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Sanctum;
 
-namespace Sanctum.Communication
+namespace Sanctum
 {
     public enum PacketFamily : byte
     {
@@ -34,16 +35,22 @@ namespace Sanctum.Communication
     {
         Initialize = 0
     }
+}
+
+namespace Sanctum.Communication
+{
 
     public class Packet
     {
-        private List<byte> Data;
+        public List<byte> Data;
 
-        private int ReadPosition = 6;
-        private int WritePosition = 6;
+        private int ReadPosition = 2;
+        private int WritePosition = 2;
 
         public PacketFamily Family { get { return (PacketFamily)Data[0]; } set { Data[0] = (byte)value; } }
         public PacketAction Action { get { return (PacketAction)Data[1]; } set { Data[1] = (byte)value; } }
+
+        public byte[] Body { get { return Data.GetRange(2, Data.Count - 2).ToArray<byte>(); } }
 
         public int Length { get { return Data.Count; } }
 
@@ -59,7 +66,6 @@ namespace Sanctum.Communication
             Data = new List<byte>(2);
             Data.Add((byte)family);
             Data.Add((byte)action);
-            Data.AddRange(new byte[] { 0, 0, 0, 0 }); //Checksum
         }
 
         public void SetID(PacketFamily family, PacketAction action)
@@ -169,12 +175,11 @@ namespace Sanctum.Communication
             PacketAction action = Action;
 
             Data.Clear();
-            this.ReadPosition = 6;
-            this.WritePosition = 6;
+            this.ReadPosition = 2;
+            this.WritePosition = 2;
 
             Data.Add((byte)family);
             Data.Add((byte)action);
-            Data.AddRange(new byte[] { 0, 0, 0, 0 }); //Checksum
         }
     }
 }
