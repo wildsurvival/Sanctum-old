@@ -29,15 +29,6 @@ using Sanctum.Communication;
 
 namespace Server
 {
-    public class StateObject
-    {
-        public Socket WorkSocket = null;
-        public const int BufferSize = 2048;
-        public byte[] Buffer = new byte[BufferSize];
-        public List<byte> Response = new List<byte>();
-        public int ResponseSize = 0;
-    }
-
     public class Client
     {
         public StateObject SocketState;
@@ -70,7 +61,7 @@ namespace Server
                 return;
 
             List<byte> Data = Packet.Data;
-            byte[] Length = new byte[2] { (byte)(Data.Count >> 8), (byte)Data.Count }; //Short length (so we can have more than just a 255 sized packet)
+            byte[] Length = new byte[2] { (byte)(Data.Count >> 8), (byte)Data.Count }; //Short length (so we can have more than just a 255 byte sized packet)
             Data.InsertRange(0, Length);
 
             ClientSocket.BeginSend(Data.ToArray<byte>(), 0, Data.Count, 0, new AsyncCallback(SendCallback), this);

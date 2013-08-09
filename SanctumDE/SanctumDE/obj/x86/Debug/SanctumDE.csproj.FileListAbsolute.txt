@@ -11,4 +11,3 @@ C:\Users\Andrew Choate\documents\visual studio 2010\Projects\SanctumDE\SanctumDE
 C:\Users\Andrew Choate\documents\visual studio 2010\Projects\SanctumDE\SanctumDE\obj\x86\Debug\SanctumDE.csprojResolveAssemblyReference.cache
 C:\Users\Andrew Choate\documents\visual studio 2010\Projects\SanctumDE\SanctumDE\obj\x86\Debug\SanctumDE.Main.resources
 C:\Users\Andrew Choate\documents\visual studio 2010\Projects\SanctumDE\SanctumDE\bin\Debug\SanctumDE.exe.config
-C:\Users\Andrew Choate\documents\visual studio 2010\Projects\SanctumDE\SanctumDE\bin\Debug\PropertyGridEx.dll

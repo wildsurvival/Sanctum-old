@@ -24,12 +24,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using System.Drawing;
 using System.Resources;
 using System.ComponentModel;
 
 namespace Sanctum.Data
 {
+    /// <summary>
+    /// Serializable class that stores resources and its metadata
+    /// </summary>
     [Serializable]
     public class Resource
     {
@@ -38,15 +40,36 @@ namespace Sanctum.Data
         public Dictionary<string, string> Metadata = new Dictionary<string, string>();
     }
 
+    /// <summary>
+    /// Class made to store/retrieve resources and its metadata
+    /// </summary>
     public class ResourceFile
     {
+        /// <summary>
+        /// List of resources stored in the resource file
+        /// </summary>
         public Dictionary<string, Resource> Resources;
+
+        /// <summary>
+        /// Access the resource dictionary
+        /// </summary>
+        /// <param name="index">Index string of the resource</param>
+        /// <returns></returns>
+        public Resource this[string index]
+        {
+            get { return (Resource)Resources[index]; }
+            set { Resources[index] = value; }
+        }
 
         public ResourceFile()
         {
             this.Resources = new Dictionary<string, Resource>();
         }
 
+        /// <summary>
+        /// Loads the resource file and stores the resources in the resource dictionary
+        /// </summary>
+        /// <param name="file"></param>
         public void Load(string file)
         {
             Resources.Clear();
@@ -65,6 +88,10 @@ namespace Sanctum.Data
             Set.Close();
         }
 
+        /// <summary>
+        /// Saves all resources in the dictionary to a file
+        /// </summary>
+        /// <param name="file"></param>
         public void Save(string file)
         {
             ResourceWriter Writer = new ResourceWriter(file);

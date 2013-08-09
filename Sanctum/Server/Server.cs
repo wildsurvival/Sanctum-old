@@ -72,7 +72,7 @@ namespace Server
                 {
                     Client Client = ClientPair.Value;
 
-                    Client.SocketState.WorkSocket.Disconnect(false);
+                    Client.SocketState.WorkSocket.BeginDisconnect(false, new AsyncCallback(DisconnectCallback), Client);
                     Clients.Remove(ClientPair.Key);
                 }
             }
@@ -114,6 +114,14 @@ namespace Server
             listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
         }
 
+        private void DisconnectCallback(IAsyncResult ar)
+        {
+            Client Client = (Client)ar.AsyncState;
+            Socket WorkSocket = Client.SocketState.WorkSocket;
+
+            WorkSocket.EndDisconnect(ar);
+        }
+
         public void RecieveCallback(IAsyncResult ar)
         {
             Client Client = (Client)ar.AsyncState;
@@ -122,8 +130,11 @@ namespace Server
             SocketError ErrorCode;
             int BytesRead = WorkSocket.EndReceive(ar, out ErrorCode);
 
-            if (BytesRead == 0)
-                return;
+            if (BytesRead == 0) // No data recieved
+            {
+                    WorkSocket.BeginReceive(Client.SocketState.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(RecieveCallback), Client);
+                    return;
+            }
 
             if (Client.SocketState.ResponseSize == 0) // Starting a new packet because there was previous data was sent
             {

@@ -27,6 +27,9 @@ using Sanctum;
 
 namespace Server
 {
+    /// <summary>
+    /// Handles all input provided into the console
+    /// </summary>
     public static class InputHandler
     {
         private static Dictionary<string, Handler> Handlers = InitializeHandlers();

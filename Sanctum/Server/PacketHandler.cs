@@ -28,6 +28,9 @@ using Sanctum.Communication;
 
 namespace Server
 {
+    /// <summary>
+    /// State attribute to limit certain packet methods to 
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public sealed class StateAttribute : Attribute
     {
@@ -42,6 +45,23 @@ namespace Server
         public StateAttribute(ClientState State)
         {
             this.State = State;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    public sealed class MinimumQueueAttribute : Attribute
+    {
+        public int MinimumQueue
+        {
+            get { return minimumQueue; }
+            set { minimumQueue = value; }
+        }
+
+
+        private int minimumQueue;
+        public MinimumQueueAttribute(int MinimumQueue)
+        {
+            this.MinimumQueue = MinimumQueue;
         }
     }
 
@@ -65,7 +85,15 @@ namespace Server
                         {
                             PacketAction Action = (PacketAction)Enum.Parse(typeof(PacketAction), Method.Name);
 
-                            Register(Family, Action, (Action<Client, Packet>)Delegate.CreateDelegate(typeof(Action<Client, Packet>), Method));
+                            MinimumQueueAttribute[] MinimumQueue = (MinimumQueueAttribute[])Method.GetCustomAttributes(typeof(MinimumQueueAttribute), false);
+                            
+                            int MinimumQueueTime = 0;
+                            if (MinimumQueue.Length > 0)
+                            {
+                                MinimumQueueTime = ((MinimumQueueAttribute)MinimumQueue[0]).MinimumQueue;
+                            }
+
+                            Register(Family, Action, MinimumQueueTime, (Action<Client, Packet>)Delegate.CreateDelegate(typeof(Action<Client, Packet>), Method));
                         }
                     }
                 }
@@ -74,14 +102,14 @@ namespace Server
             return Handlers;
         }
 
-        public static void Register(PacketFamily Family, PacketAction Action, Action<Client, Packet> Delegate)
+        public static void Register(PacketFamily Family, PacketAction Action, int MinimumQueue, Action<Client, Packet> Delegate)
         {
             if (Exists(Family, Action))
             {
                 Output.Warning("Overriding previously registered packet: {0}_{1}", Family.ToString(), Action.ToString());
             }
 
-            Handlers[(int)Family, (int)Action] = new Handler(Family, Action, Delegate);
+            Handlers[(int)Family, (int)Action] = new Handler(Family, Action, MinimumQueue, Delegate);
         }
 
         public static void Handle(Client Client, Packet Packet)
@@ -109,7 +137,29 @@ namespace Server
                     }
                 }
 
-                if (StateMet)
+                bool QueueMet = false;
+                if (Handler.MinimumQueue > 0)
+                {
+                    if (Handler.LastQueue == default(DateTime))
+                    {
+                        Handler.LastQueue = DateTime.Now;
+                        QueueMet = true;
+                    }
+                    else
+                    {
+                        if (DateTime.Now.Subtract(Handler.LastQueue).TotalMilliseconds > Handler.MinimumQueue)
+                        {
+                            Handler.LastQueue = DateTime.Now;
+                            QueueMet = true;
+                        }
+                    }
+                }
+                else
+                {
+                    QueueMet = true;
+                }
+
+                if (StateMet && QueueMet)
                 {
                     lock (Client)
                     {
@@ -155,14 +205,18 @@ namespace Server
         {
             public PacketFamily Family;
             public PacketAction Action;
-            public ClientState State;
             public Action<Client, Packet> Delegate;
 
-            public Handler(PacketFamily Family, PacketAction Action, Action<Client, Packet> Delegate)
+            public int MinimumQueue = 0;
+            public DateTime LastQueue;
+
+            public Handler(PacketFamily Family, PacketAction Action, int MinimumQueue, Action<Client, Packet> Delegate)
             {
                 this.Action = Action;
                 this.Family = Family;
                 this.Delegate = Delegate;
+                this.MinimumQueue = MinimumQueue;
+                this.LastQueue = default(DateTime);
             }
         }
 
